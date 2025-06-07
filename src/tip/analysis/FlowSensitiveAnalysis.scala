@@ -38,6 +38,7 @@ object FlowSensitiveAnalysis {
         Some(kind match {
           case Analysis.sign => new SimpleSignAnalysis(typedCfg.left.get); //  same functionality as SignAnalysis.Intraprocedural.SimpleSolver(typedCfg.left.get)
           case Analysis.livevars => new LiveVarsAnalysisSimpleSolver(typedCfg.left.get)
+          case Analysis.reaching => new ReachingDefinitionsAnalysisSimpleSolver(typedCfg.left.get)
           case Analysis.available => new AvailableExpAnalysisSimpleSolver(typedCfg.left.get)
           //case Analysis.vbusy => new VeryBusyExpAnalysisSimpleSolver(typedCfg.left.get) <--- Complete here
           //case Analysis.reaching => new ReachingDefAnalysisSimpleSolver(typedCfg.left.get) <--- Complete here
@@ -48,6 +49,7 @@ object FlowSensitiveAnalysis {
         Some(kind match {
           case Analysis.sign => new SignAnalysis.Intraprocedural.WorklistSolver(typedCfg.left.get)
           case Analysis.livevars => new LiveVarsAnalysisWorklistSolver(typedCfg.left.get)
+          case Analysis.reaching => new ReachingDefinitionsAnalysisWorklistSolver(typedCfg.left.get)
           case Analysis.available => new AvailableExpAnalysisWorklistSolver(typedCfg.left.get)
           //case Analysis.vbusy => new VeryBusyExpAnalysisWorklistSolver(typedCfg.left.get) <--- Complete here
           //case Analysis.reaching => new ReachingDefAnalysisWorklistSolver(typedCfg.left.get) <--- Complete here

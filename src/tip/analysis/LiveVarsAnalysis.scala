@@ -5,6 +5,8 @@ import tip.lattices._
 import tip.ast.AstNodeData.DeclarationData
 import tip.solvers._
 import tip.cfg._
+import tip.ast.AstOps._
+import tip.cfg.CfgOps._
 
 import scala.collection.immutable.Set
 
@@ -25,15 +27,15 @@ abstract class LiveVarsAnalysis(cfg: IntraproceduralProgramCfg)(implicit declDat
       case _: CfgFunExitNode => lattice.sublattice.bottom
       case r: CfgStmtNode =>
         r.data match {
-          case cond: AExpr => ??? //<--- Complete here
+          case _: AExpr => s ++ n.appearingIds
           case as: AAssignStmt =>
             as.left match {
-              case id: AIdentifier => ??? //<--- Complete here
+              case id: AIdentifier => s - declData(id) ++ as.right.appearingIds
               case _ => ???
             }
-          case varr: AVarStmt => ??? //<--- Complete here
-          case ret: AReturnStmt => ??? //<--- Complete here
-          case out: AOutputStmt => ??? //<--- Complete here
+          case _: AVarStmt => s -- n.appearingIds
+          case _: AReturnStmt => n.appearingIds
+          case _: AOutputStmt => s ++ n.appearingIds
           case _ => s
         }
       case _ => s
