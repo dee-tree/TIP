@@ -35,7 +35,7 @@ trait IntervalAnalysisWidening extends ValueAnalysisMisc with Dependencies[CfgNo
     (x, y) match {
       case (IntervalLattice.EmptyInterval, _) => y
       case (_, IntervalLattice.EmptyInterval) => x
-      case ((l1, h1), (l2, h2)) => ??? //<--- Complete here
+      case ((l1, h1), (l2, h2)) => (maxB(Set(l1, l2).min), minB(Set(h1, h2).max))
     }
 
   def widen(x: liftedstatelattice.Element, y: liftedstatelattice.Element): liftedstatelattice.Element =
@@ -60,6 +60,11 @@ object IntervalAnalysis {
         extends IntraprocValueAnalysisWorklistSolverWithReachability(cfg, IntervalLattice)
         with WorklistFixpointSolverWithReachabilityAndWidening[CfgNode]
         with IntervalAnalysisWidening
+
+    class WorklistSolverWithWideningVarSize(cfg: IntraproceduralProgramCfg)(implicit declData: DeclarationData)
+      extends IntraprocValueAnalysisWorklistSolverWithReachability(cfg, IntervalLattice)
+        with WorklistFixpointSolverWithReachabilityAndWidening[CfgNode]
+        with VariableSizeAnalysis
 
     /**
       * Interval analysis, using the worklist solver with init, widening, and narrowing.
